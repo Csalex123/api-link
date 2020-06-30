@@ -17,14 +17,14 @@ router.post('/sign-up', async(req, res) => {
     const account = await Account.findOne({where: {email} });
 
     if(account){
-        return res.json({msg: 'Essa conta já existe'});
+        return res.jsonBadRequest(null, "Account already exists");
     }
    
     const hash = bcrypt.hashSync(password, saltRound)
 
     const newAccount = await Account.create({email, password: hash}).then().catch();
 
-    return res.json(newAccount);
+    return res.jsonOk(newAccount, "Account created.");
 });
 
 
